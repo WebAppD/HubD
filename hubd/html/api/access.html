@@ -1,0 +1,71 @@
+#parse("/inc/top.html")
+<div id="middle">
+
+	<h1>$title</h1>
+
+	<div class="pagination">
+		#pagination($access.paging)
+		<a href="/api/apps" class="button">$svg.mi_apps #lang('API_APPS')</a>
+	</div>
+	#if($access.size()==0)
+	<div class="bx">
+		<h2>#lang('EMPTY')</h2>
+	</div>
+	#end
+
+	#foreach($acces in $access.result)
+	<div class="bx accs" id="$acces.id">
+		<h3>$acces.app_name <small class="selectable grey">$acces.app_id</small></h3>
+
+		<div class="datas">
+			#if($acces.date)
+			<div>
+				<div>#lang('GRANTED_DATE')</div>
+				<div>#date($acces.date,'full'), #since($acces.date)</div>
+			</div>
+			#end
+			<div>
+				<div>#lang('ACCESS','ucfirst')</div>
+				<div>#if($acces.count)#number($acces.count) #lang('ACCESS'), #lang('LAST_ACCESS') #since($acces.access) (#date($acces.access))#else#lang('NEVER')#end</div>
+			</div>
+			#if($acces.access_token)
+			<div>
+				<div>access_token</div>
+				<div class="selectable"><strong>$acces.access_token</strong></div>
+			</div>
+			#end
+			#if($acces.refresh_token)
+			<div>
+				<div>refresh_token</div>
+				<div class="selectable"><strong>$acces.refresh_token</strong></div>
+			</div>
+			#end
+			#if($acces.expire)
+			<div>
+				<div>expire</div>
+				<div><strong>#since($acces.expire, 2)</strong></div>
+			</div>
+			#end
+			#if($acces.scopes)
+			<div>
+				<div>#lang('AUTHORIZATIONS')</div>
+				<div>#foreach($scope in $acces.scopes)#modulo('')#lang("SCOPE_${scope}_EXPLAIN")#end.</div>
+			</div>
+			#end
+		</div>
+
+		<div class="flexible">
+			<button class="refresh_access flexable short">$svg.fa_icon_refresh#lang('ACCESS_REFRESH')</button>
+			<div class="space"></div>
+			<button class="remove_access flexable short">$svg.mi_delete_forever#lang('ACCESS_REMOVE')</button>
+		</div>
+	</div>
+	#end
+	<script type="text/javascript">
+		sys.push(function () {
+			sys.api.remove_access();
+			sys.api.refresh_access();
+		});
+	</script>
+</div>
+#parse("/inc/bottom.html")

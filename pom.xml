@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>live.page</groupId>
+    <artifactId>hubd</artifactId>
+    <version>2.2.2</version>
+    <packaging>pom</packaging>
+    <name>HubD Global</name>
+    <description>A Jar Engine to deploy complex Website with Java Servlet, MongoDb and Velocity</description>
+    <organization>
+        <name>Laurent PAGE</name>
+        <url>https://laurent.page.live/</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>Apache V2.0</name>
+        </license>
+    </licenses>
+    <properties>
+        <!-- BE CAREFUL !! specify a safe folder, it can remove all file in directory-->
+        <tomcatDir>/data/tomcat</tomcatDir>
+        <tomcatLibDir>/data/tomcat/lib</tomcatLibDir>
+        <cronDir>/data/croners</cronDir>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <modules>
+        <module>hubd</module>
+        <module>crond</module>
+    </modules>
+    <repositories>
+        <!-- Test original repo before others -->
+        <repository>
+            <id>central-bis</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <!-- local repo -->
+        <repository>
+            <id>local-repository</id>
+            <url>file:///data/repo/HubD/repository</url>
+        </repository>
+        <repository>
+            <id>bintray-nitram509-jbrotli</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/nitram509/jbrotli</url>
+        </repository>
+    </repositories>
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
+
+</project>

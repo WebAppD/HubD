@@ -1,0 +1,39 @@
+#if($pub || $analytics)<h3>#lang('COOKIES_CHOOSE')</h3>#end
+#if($pub)
+    <p>#lang('COOKIES_EXPLAINS')</p>
+    <div class="option" id="cookies_ads">
+        <strong>#lang('COOKIES_ADS_TITLE')</strong>
+        <p>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            #lang('COOKIES_ADS')</p>
+    </div>
+    <div class="option none" id="cookies_ads_perso">
+        <strong>#lang('COOKIES_ADS_PERSO_TITLE')</strong>
+        <p>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            #lang('COOKIES_ADS_PERSO')</p>
+    </div>
+#end
+#if($analytics)
+<div class="option" id="cookies_stats">
+    <strong>#lang('COOKIES_STATS_TITLE')</strong>
+    <p>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        #lang('COOKIES_STATS')
+    </p>
+</div>
+#end
+<script type="text/javascript">
+    sys.push(function () {
+        sys.consent.choose();
+    })
+</script>

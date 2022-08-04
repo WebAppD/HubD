@@ -1,0 +1,19 @@
+#parse("/inc/top.html")
+<div id="middle">
+    #if( $user && $user.admin )
+    <div class="cmd_top flexible">
+        <a class="button" rel="nofollow" href="/edit?$requesturi">#lang('PAGE_CREATE')</a>
+    </div>
+    #end
+    <h1>#lang('ERROR_PAGE_TITLE')#if( $status ) // ${status}#end</h1>
+    #if($message)
+    <p>$message</p>
+    #else
+    #if($error)
+    <p>$error</p>
+    #end
+    #end
+
+    #parse("/inc/publisher.html")
+</div>
+#parse("/inc/bottom.html")

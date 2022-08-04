@@ -1,0 +1,27 @@
+#parse("/inc/top.html")
+<div id="middle" class="forum">
+	<ul class="threads" id="posts_list">
+		#foreach( $thread in $threads.result)
+			#parse('/threads/thread_item.html')
+		#end
+	</ul>
+	<div class="pagination">
+		#if($user.editor)
+			<button onclick="sys.admin_forums.order()" title="#lang('ORDER_CATEGORIES')">$svg.mi_format_align_right</button>
+			<button onclick="sys.admin_forums.create()" title="#lang('CREATE_CATEGORY')">$svg.mi_playlist_add</button>
+		#end
+		#pagination($threads.paging)
+	</div>
+
+	#parse("/inc/publisher.html")
+</div>
+#if($user.editor)
+<script type="text/javascript">
+	sys.push(function () {
+		sys.admin_forums.init();
+	});
+</script>
+#end
+#parse("/index/latteral.html")
+#parse("/inc/bottom.html")
+

@@ -1,0 +1,1 @@
+Classes used for files and images manipulations
