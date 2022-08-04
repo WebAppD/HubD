@@ -22,7 +22,6 @@ import java.util.Date;
 public class PushJsServlet extends BaseServlet {
 	private static String push = null;
 	private static byte[] pushGZip = null;
-	private static byte[] pushBRZip = null;
 	private static Date pushDate = new Date();
 
 	@Override
@@ -46,12 +45,7 @@ public class PushJsServlet extends BaseServlet {
 
 		resp.setHeaderMaxCache();
 
-		if (pushBRZip != null && accept != null && accept.contains("br")) {
-			resp.setContentLength(pushBRZip.length);
-			resp.setHeader("Content-Encoding", "br");
-			resp.getOutputStream().write(pushBRZip);
-
-		} else if (pushGZip != null && accept != null && accept.contains("gzip")) {
+		if (pushGZip != null && accept != null && accept.contains("gzip")) {
 			resp.setContentLength(pushGZip.length);
 			resp.setHeader("Content-Encoding", "gzip");
 			resp.getOutputStream().write(pushGZip);
@@ -69,7 +63,6 @@ public class PushJsServlet extends BaseServlet {
 			sr.close();
 			pushDate = new Date(PushJsServlet.class.getResource("/res/push.js").openConnection().getLastModified());
 			pushGZip = Compressors.gzipCompressor(push.getBytes());
-			pushBRZip = Compressors.brotliCompressor(push.getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

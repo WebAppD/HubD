@@ -29,7 +29,6 @@ public class SVGServlet extends BaseServlet {
 
 	private static byte[] svgSrc = null;
 	private static byte[] svgGZip = null;
-	private static byte[] svgBRZip = null;
 	private static Date svgSrcDate = new Date(0);
 
 	public static String getName() {
@@ -73,13 +72,7 @@ public class SVGServlet extends BaseServlet {
 			accept = Arrays.asList(acceptEncoding.split("([ ,]+)"));
 		}
 
-		if (accept.contains("br") && svgBRZip != null) {
-
-			resp.setContentLength(svgBRZip.length);
-			resp.setHeader("Content-Encoding", "br");
-			out.write(svgBRZip);
-
-		} else if (accept.contains("gzip") && svgGZip != null) {
+		if (accept.contains("gzip") && svgGZip != null) {
 
 			resp.setContentLength(svgGZip.length);
 			resp.setHeader("Content-Encoding", "gzip");
@@ -135,7 +128,6 @@ public class SVGServlet extends BaseServlet {
 	public static void build() {
 		svgSrc = buildSvg();
 		svgGZip = Compressors.gzipCompressor(svgSrc);
-		svgBRZip = Compressors.brotliCompressor(svgSrc);
 		UiStyleServlet.buildJs();
 	}
 

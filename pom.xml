@@ -37,13 +37,9 @@
         <!-- local repo -->
         <repository>
             <id>local-repository</id>
-            <url>file:///data/repo/HubD/repository</url>
+            <url>file:///home/tronic/IdeaProjects/HubD/repository</url>
         </repository>
-        <repository>
-            <id>bintray-nitram509-jbrotli</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/nitram509/jbrotli</url>
-        </repository>
+
     </repositories>
     <build>
         <defaultGoal>install</defaultGoal>

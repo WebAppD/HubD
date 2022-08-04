@@ -54,11 +54,6 @@ public class UiStyleServlet extends BaseServlet {
 	private static byte[] uiFontsGZip = null; //Bzip Fonts
 
 
-	//Brotli compression
-	private static byte[] uiJsBRZip = null; //Brotli JavaScript
-	private static byte[] uiCssBRZip = null; //Brotli CSS
-	private static byte[] uiFontsBRZip = null; //Brotli Fonts
-
 	//Uniques names
 	private static String nameJs = null;
 	private static String nameCss = null;
@@ -150,7 +145,7 @@ public class UiStyleServlet extends BaseServlet {
 		if (!Fx.IS_DEBUG && req.getRequestURI().equals(nameCss)) {
 			resp.setContentType("text/css; charset=utf-8");
 			WebServletResponse.setHeaderMaxCache(resp);
-			send(resp, accept, date_css, uiCssGZip, uiCssBRZip, uiCss);
+			send(resp, accept, date_css, uiCssGZip, uiCss);
 			return;
 
 		}
@@ -158,7 +153,7 @@ public class UiStyleServlet extends BaseServlet {
 		if (req.getRequestURI().equals(nameFonts)) {
 			resp.setContentType("text/css; charset=utf-8");
 			WebServletResponse.setHeaderMaxCache(resp);
-			send(resp, accept, date_fonts, uiFontsGZip, uiFontsBRZip, uiFonts);
+			send(resp, accept, date_fonts, uiFontsGZip, uiFonts);
 			return;
 		}
 
@@ -176,7 +171,7 @@ public class UiStyleServlet extends BaseServlet {
 		if (req.getRequestURI().equals(nameJs)) {
 			resp.setContentType("application/javascript; charset=utf-8");
 			WebServletResponse.setHeaderMaxCache(resp);
-			send(resp, accept, date_js, uiJsGZip, uiJsBRZip, uiJs);
+			send(resp, accept, date_js, uiJsGZip, uiJs);
 
 			return;
 		}
@@ -218,16 +213,11 @@ public class UiStyleServlet extends BaseServlet {
 	/**
 	 * Send corrects headers to client
 	 */
-	private void send(HttpServletResponse resp, List<String> accept, Date date, byte[] uiGZip, byte[] uiBRZip, String ui) throws IOException {
+	private void send(HttpServletResponse resp, List<String> accept, Date date, byte[] uiGZip, String ui) throws IOException {
 		resp.setDateHeader("Last-Modified", date.getTime());
 		ServletOutputStream out = resp.getOutputStream();
 
-		if (accept.contains("br") && uiBRZip != null) {
-			resp.setContentLength(uiBRZip.length);
-			resp.setHeader("Content-Encoding", "br");
-			out.write(uiBRZip);
-
-		} else if (accept.contains("gzip")) {
+		if (accept.contains("gzip")) {
 			resp.setContentLength(uiGZip.length);
 			resp.setHeader("Content-Encoding", "gzip");
 			out.write(uiGZip);
@@ -248,7 +238,6 @@ public class UiStyleServlet extends BaseServlet {
 				uiCss = uiCss.replace("url(/", "url(" + Settings.getCDNHttp() + "/");
 				byte[] uiCss_copy = Compressors.compressCss(getCopyright() + _uiCss).getBytes();
 				uiCssGZip = Compressors.gzipCompressor(uiCss_copy);
-				uiCssBRZip = Compressors.brotliCompressor(uiCss_copy);
 				Fx.log("UI CSS cached and compressed at " + Fx.UTCDate() + ", lastModification on " + date_css);
 			} catch (Exception e) {
 				Fx.log("Error CSS cacher " + Fx.UTCDate());
@@ -284,7 +273,6 @@ public class UiStyleServlet extends BaseServlet {
 
 				uiFonts = "\n" + (Fx.IS_DEBUG ? wrt.toString() : Compressors.compressCss(wrt.toString()));
 				uiFontsGZip = Compressors.gzipCompressor(uiFonts.getBytes());
-				uiFontsBRZip = Compressors.brotliCompressor(uiFonts.getBytes());
 				nameFonts = "/ui/fonts-" + Hidder.encodeString(names.toString().hashCode() + Hidder.encodeDate(date_fonts)).toLowerCase() + ".css";
 				Fx.log("UI Fonts cached and compressed at " + Fx.UTCDate() + ", lastModification on " + date_fonts);
 				wrt.close();
@@ -336,7 +324,6 @@ public class UiStyleServlet extends BaseServlet {
 				String _uiJs = getJs();
 				uiJs = Compressors.compressJs(_uiJs);
 				uiJsGZip = Compressors.gzipCompressor(uiJs.getBytes());
-				uiJsBRZip = Compressors.brotliCompressor(uiJs.getBytes());
 				Fx.log("UI JS cached and compressed at " + Fx.UTCDate() + ", lastModification on " + date_js);
 				nameJs = "/ui/js-" + Hidder.encodeDate(date_js) + ".js";
 			} catch (Exception e) {

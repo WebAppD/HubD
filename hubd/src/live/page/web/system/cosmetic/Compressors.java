@@ -8,43 +8,17 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.io.FileUtils;
-import org.meteogroup.jbrotli.Brotli;
-import org.meteogroup.jbrotli.BrotliCompressor;
-import org.meteogroup.jbrotli.BrotliException;
-import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.zip.Deflater;
 
 /**
- * Brotli and Gzip compression tools
+ * Gzip compression tools
  */
 public class Compressors {
 
-	/**
-	 * Brotli algorithm compression
-	 *
-	 * @param data to compress
-	 * @return byte array of compressed data
-	 */
-	public static byte[] brotliCompressor(byte[] data) {
-		if (data == null) {
-			return null;
-		}
-		try {
-			BrotliLibraryLoader.loadBrotli();
-			BrotliCompressor compressor = new BrotliCompressor();
-			ByteBuffer compressedBuf = ByteBuffer.allocate(1024 * 1024);
-			int outLength = compressor.compress(Brotli.DEFAULT_PARAMETER, ByteBuffer.wrap(data), compressedBuf);
-			return java.util.Arrays.copyOfRange(compressedBuf.array(), 0, outLength);
-		} catch (BrotliException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * Gzip algorithm compression
